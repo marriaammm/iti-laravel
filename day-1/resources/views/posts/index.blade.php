@@ -1,73 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <title>All Posts</title>
-</head>
-<body>
-    
-<div class="overflow-x-auto p-6">
-    <h2 class="text-2xl font-bold">ITI Blog - All Posts</h2>
-    
-    <div class="flex justify-end my-4">
-        <a href="#" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Create Post</a>
+<x-layout>
+    <x-slot:title>All Posts</x-slot>
+<body class="bg-gray-100">
+    <div class="flex justify-between items-center my-6">
+        <p class="text-gray-600 text-lg">Manage all your posts in one place.</p>
+        <x-link-button href="{{ route('posts.create') }}" color="green">
+            Create Post
+        </x-link-button>
     </div>
 
-    <table class="min-w-full divide-y divide-gray-200 bg-white text-sm">
-        <thead class="text-left bg-gray-100">
-            <tr>
-                <th class="px-4 py-2 font-medium text-gray-900">#</th>
-                <th class="px-4 py-2 font-medium text-gray-900">Title</th>
-                <th class="px-4 py-2 font-medium text-gray-900">Posted By</th>
-                <th class="px-4 py-2 font-medium text-gray-900">Created At</th>
-                <th class="px-4 py-2 font-medium text-gray-900">Actions</th>
-            </tr>
-        </thead>
+    <div class="overflow-x-auto">
+        <table class="w-full border-collapse bg-white text-sm shadow-md rounded-lg">
+            <thead class="bg-gray-200 text-gray-700 text-left">
+                <tr>
+                    <th class="px-6 py-3 font-semibold">#</th>
+                    <th class="px-6 py-3 font-semibold">Title</th>
+                    <th class="px-6 py-3 font-semibold">Posted By</th>
+                    <th class="px-6 py-3 font-semibold">Created At</th>
+                    <th class="px-6 py-3 font-semibold text-center">Actions</th>
+                </tr>
+            </thead>
 
-        <tbody class="divide-y divide-gray-200">
-          @foreach ($posts as $post)
-            <tr>
-                <td class="px-4 py-2 text-gray-900 font-semibold">{{$post['id']}}</td>
-                <td class="px-4 py-2 text-gray-700">{{$post['title']}}</td>
-                <td class="px-4 py-2 text-gray-700">{{$post['author']}}</td>
-                <td class="px-4 py-2 text-gray-700">{{$post['created_at']}}</td>
-                <td class="px-4 py-2">
-                    <a href="#" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">View</a>
-                    <a href="#" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">Edit</a>
-                    <a href="#" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</a>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+            <tbody class="divide-y divide-gray-300">
+                @foreach ($posts as $post)
+                <tr class="hover:bg-gray-50 transition">
+                    <td class="px-6 py-4 text-gray-900 font-semibold">{{$post['id']}}</td>
+                    <td class="px-6 py-4 text-gray-700">{{$post['title']}}</td>
+                    <td class="px-6 py-4 text-gray-700">{{$post['author']}}</td>
+                    <td class="px-6 py-4 text-gray-700">{{$post['created_at']}}</td>
+                    <td class="px-6 py-4 flex justify-center space-x-2">
+                        <x-link-button href="{{ route('posts.show',$post['id'])}}" color="blue">View</x-link-button>
+                        <x-link-button href="{{ route('posts.edit',$post['id'])}}" color="yellow">Edit</x-link-button>
+                        <x-link-button href="#" color="red">Delete</x-link-button>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 
     <!-- Pagination -->
-    <div class="mt-4">
-        <nav class="flex justify-center">
-            <ul class="inline-flex items-center -space-x-px">
-                <li>
-                    <a href="#" class="px-3 py-1 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
-                </li>
-                <li>
-                    <a href="#" class="px-3 py-1 leading-tight text-gray-700 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-900">1</a>
-                </li>
-                <li>
-                    <a href="#" class="px-3 py-1 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">2</a>
-                </li>
-                <li>
-                    <a href="#" class="px-3 py-1 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">3</a>
-                </li>
-                <li>
-                    <a href="#" class="px-3 py-1 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
-                </li>
-            </ul>
+    <div class="mt-6 flex justify-center">
+        <nav class="flex space-x-2">
+            <x-link-button href="#">Previous</x-link-button>
+            <x-link-button href="#" variant="active">1</x-link-button>
+            <x-link-button href="#">2</x-link-button>
+            <x-link-button href="#">3</x-link-button>
+            <x-link-button href="#">Next</x-link-button>
         </nav>
     </div>
-
-</div>
-
 </body>
-</html>
+</x-layout>
