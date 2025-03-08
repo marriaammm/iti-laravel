@@ -2,13 +2,10 @@
     <x-slot:title>Edit Post</x-slot>
         <!-- Form Container -->
             
-            <!-- Navbar inside form card --> 
 
-            <h2 class="text-2xl font-bold mb-6 text-gray-900">Edit Post</h2>
-
-            <form action="#" method="POST">
+            <form action="{{route('posts.update',1)}}" method="POST">
                 @csrf
-
+                @method('PUT')
                 <!-- Title Input -->
                 <div class="mb-4">
                     <label for="title" class="block text-gray-700 font-medium">Title</label>

@@ -60,4 +60,8 @@ class PostController extends Controller
     public function edit($id){
         return view('posts.edit');
     }
+
+    public function update($id){
+        return to_route('posts.show',1);
+    }
 }
