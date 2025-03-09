@@ -23,9 +23,9 @@
             <label for="creator" class="block text-gray-700 font-medium">Post Creator</label>
             <select name="creator" id="creator" 
                 class="w-full p-2 border border-gray-300 rounded-lg mt-1">
-                <option value="Ahmed">Ahmed</option>
-                <option value="John Doe">John Doe</option>
-                <option value="Jane Smith">Jane Smith</option>
+                @foreach ( $users as $user )
+                <option value="{{ $user->id }}">{{$user->name}}</option>
+                @endforeach
             </select>
         </div>
 

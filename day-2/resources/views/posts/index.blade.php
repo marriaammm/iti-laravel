@@ -23,30 +23,62 @@
             <tbody class="divide-y divide-gray-300">
                 @foreach ($posts as $post)
                 <tr class="hover:bg-gray-50 transition">
-                    <td class="px-6 py-4 text-gray-900 font-semibold">{{$post['id']}}</td>
-                    <td class="px-6 py-4 text-gray-700">{{$post['title']}}</td>
-                    <td class="px-6 py-4 text-gray-700">{{$post['author']}}</td>
-                    <td class="px-6 py-4 text-gray-700">{{$post['created_at']}}</td>
+                    <td class="px-6 py-4 text-gray-900 font-semibold">{{$post->id}}</td>
+                    <td class="px-6 py-4 text-gray-700">{{$post->title}}</td>
+                    <td class="px-6 py-4 text-gray-700">{{$post->user->name}}</td>
+                    <td class="px-6 py-4 text-gray-700">{{$post->created_at->format('Y-m-d')}}</td>
                     <td class="px-6 py-4 flex justify-center space-x-2">
-                        <x-link-button href="{{ route('posts.show',$post['id'])}}" color="blue">View</x-link-button>
-                        <x-link-button href="{{ route('posts.edit',$post['id'])}}" color="yellow">Edit</x-link-button>
-                        <x-link-button href="#" color="red">Delete</x-link-button>
+                        <x-link-button href="{{ route('posts.show',$post->id)}}" color="blue">View</x-link-button>
+                        <x-link-button href="{{ route('posts.edit',$post->id)}}" color="yellow">Edit</x-link-button>
+                            <x-button data-bs-toggle="modal" data-bs-target="#deleteModal" data-post-id="{{ $post->id }}"  color="red" >
+                                Delete
+                            </x-button>
                     </td>
                 </tr>
+                
                 @endforeach
             </tbody>
         </table>
     </div>
-
+    {{-- modla for confirming the delete --}}
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this post?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    
+                    <!-- Form for deleting the post -->
+                    <form id="deleteForm" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Pagination -->
     <div class="mt-6 flex justify-center">
-        <nav class="flex space-x-2">
-            <x-link-button href="#">Previous</x-link-button>
-            <x-link-button href="#" variant="active">1</x-link-button>
-            <x-link-button href="#">2</x-link-button>
-            <x-link-button href="#">3</x-link-button>
-            <x-link-button href="#">Next</x-link-button>
-        </nav>
+        {{ $posts->links() }}
     </div>
 </body>
 </x-layout>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let deleteModal = document.getElementById('deleteModal');
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            let button = event.relatedTarget;
+            let postId = button.getAttribute('data-post-id');
+            let deleteForm = document.getElementById('deleteForm');
+            deleteForm.action = "/posts/" + postId;
+        });
+    });
+</script>
+
