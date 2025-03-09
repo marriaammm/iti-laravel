@@ -27,7 +27,7 @@ class PostController extends Controller
                 'created_at' => '2018-04-13'
             ]
         ];
-        return view('posts.index',['posts'=>$posts]);
+        return view('posts.index',compact('posts'));
     }
 
     public function show($id){
@@ -42,7 +42,7 @@ class PostController extends Controller
             ],
             'created_at' => '2025-03-08 12:47:00',
         ];
-        return view('posts.show',['post'=>$post]);
+        return view('posts.show',compact('posts'));
     }
 
     public function create(){
