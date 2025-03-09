@@ -16,6 +16,7 @@
                     <th class="px-6 py-3 font-semibold">Title</th>
                     <th class="px-6 py-3 font-semibold">Posted By</th>
                     <th class="px-6 py-3 font-semibold">Created At</th>
+                    <th class="px-6 py-3 font-semibold">Deleted At</th>
                     <th class="px-6 py-3 font-semibold text-center">Actions</th>
                 </tr>
             </thead>
@@ -27,12 +28,22 @@
                     <td class="px-6 py-4 text-gray-700">{{$post->title}}</td>
                     <td class="px-6 py-4 text-gray-700">{{$post->user->name}}</td>
                     <td class="px-6 py-4 text-gray-700">{{$post->created_at->format('Y-m-d')}}</td>
+                    <td>{{ $post->deleted_at ? 'Deleted' : 'Active' }}</td>
                     <td class="px-6 py-4 flex justify-center space-x-2">
                         <x-link-button href="{{ route('posts.show',$post->id)}}" color="blue">View</x-link-button>
                         <x-link-button href="{{ route('posts.edit',$post->id)}}" color="yellow">Edit</x-link-button>
-                            <x-button data-bs-toggle="modal" data-bs-target="#deleteModal" data-post-id="{{ $post->id }}"  color="red" >
-                                Delete
-                            </x-button>
+                        @if($post->deleted_at)
+                <form action="{{ route('posts.restore', $post->id) }}" method="POST">
+                    @csrf
+                    @method('PATCH')
+                    <button type="submit" class="bg-green-500 text-white px-2 py-1 rounded">Restore</button>
+                </form>
+            @else
+                    <x-button data-bs-toggle="modal" data-bs-target="#deleteModal" data-post-id="{{ $post->id }}"  color="red" >
+                        Delete
+                    </x-button>
+            @endif
+                            
                     </td>
                 </tr>
                 

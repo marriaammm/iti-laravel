@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class PostController extends Controller
 {
     public function index(){
-        $posts = Post::paginate(10);
+        $posts = Post::withTrashed()->paginate(10);
         return view('posts.index',compact('posts'));
     }
 
@@ -54,9 +54,14 @@ class PostController extends Controller
         return to_route('posts.show', $post->id);
     }
 
-    public function destroy($id){
-        $post = Post::findOrFail($id);
+    public function destroy(Post $post){
         $post->delete();
+        return to_route('posts.index');
+    }
+
+    public function restore($id){
+        $post = Post::withTrashed()->findOrFail($id);
+        $post->restore(); 
         return to_route('posts.index');
     }
 }
