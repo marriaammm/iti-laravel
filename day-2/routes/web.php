@@ -13,3 +13,4 @@ Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.
 Route::patch('/posts/{id}/restore', [PostController::class, 'restore'])->name('posts.restore');
 Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
 Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+Route::get('/posts/{id}/json', [PostController::class, 'show'])->name('posts.json');

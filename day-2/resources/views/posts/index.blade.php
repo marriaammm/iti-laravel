@@ -1,5 +1,6 @@
 <x-layout>
     <x-slot:title>All Posts</x-slot>
+    <div id="app">
 <body class="bg-gray-100">
     <div class="flex justify-between items-center my-6">
         <p class="text-gray-600 text-lg">Manage all your posts in one place.</p>
@@ -32,6 +33,7 @@
                     <td class="px-6 py-4 flex justify-center space-x-2">
                         <x-link-button href="{{ route('posts.show',$post->id)}}" color="blue">View</x-link-button>
                         <x-link-button href="{{ route('posts.edit',$post->id)}}" color="yellow">Edit</x-link-button>
+                        <view-ajax :id="{{ $post->id }}"></view-ajax>
                         @if($post->deleted_at)
                 <form action="{{ route('posts.restore', $post->id) }}" method="POST">
                     @csrf
@@ -39,7 +41,7 @@
                     <button type="submit" class="bg-green-500 text-white px-2 py-1 rounded">Restore</button>
                 </form>
             @else
-                    <x-button data-bs-toggle="modal" data-bs-target="#deleteModal" data-post-id="{{ $post->id }}"  color="red" >
+                    <x-button data-bs-toggle="modal" data-bs-target="#deleteModal" data-post-id="{{ $post->id }}" color="red" >
                         Delete
                     </x-button>
             @endif
@@ -52,44 +54,52 @@
         </table>
     </div>
     {{-- modla for confirming the delete --}}
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to delete this post?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                    
-                    <!-- Form for deleting the post -->
-                    <form id="deleteForm" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Yes, Delete</button>
-                    </form>
-                </div>
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this post?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+
+                <!-- Delete form -->
+                <form id="deleteForm" method="post">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                </form>
             </div>
         </div>
     </div>
+</div>
+
     <!-- Pagination -->
     <div class="mt-6 flex justify-center">
         {{ $posts->links() }}
     </div>
 </body>
+    </div>
 </x-layout>
 <script>
+    // import ViewAjax from './components/ViewAjax.vue';
+    // console.log(deleteForm.action);
     document.addEventListener("DOMContentLoaded", function () {
-        let deleteModal = document.getElementById('deleteModal');
-        deleteModal.addEventListener('show.bs.modal', function (event) {
-            let button = event.relatedTarget;
-            let postId = button.getAttribute('data-post-id');
-            let deleteForm = document.getElementById('deleteForm');
+    let deleteModal = document.getElementById('deleteModal');
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+        let button = event.relatedTarget; 
+        let postId = button.getAttribute('data-post-id'); 
+        let deleteForm = document.getElementById('deleteForm');
+        if (postId) {
             deleteForm.action = "/posts/" + postId;
-        });
+        }
     });
+});
 </script>
+<script src="{{ mix('js/app.js') }}"></script>
+
 

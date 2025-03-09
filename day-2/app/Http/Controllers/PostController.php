@@ -14,8 +14,20 @@ class PostController extends Controller
     }
 
     public function show($id){
-        $post = Post::find($id);
-        return view('posts.show',compact('post'));
+        $post = Post::with('user')->find($id);
+
+        if (request()->expectsJson()) {
+            return response()->json([
+                'title' => $post->title,
+                'description' => $post->description,
+                'user' => [
+                    'name' => $post->user->name,
+                    'email' => $post->user->email,
+                ],
+            ]);
+        }
+    
+        return view('posts.show', compact('post'));
     }
 
     public function create(){
