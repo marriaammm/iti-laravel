@@ -86,7 +86,6 @@
     </div>
 </x-layout>
 <script>
-    // import ViewAjax from './components/ViewAjax.vue';
     // console.log(deleteForm.action);
     document.addEventListener("DOMContentLoaded", function () {
     let deleteModal = document.getElementById('deleteModal');
