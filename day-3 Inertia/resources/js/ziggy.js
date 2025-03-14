@@ -1,0 +1,5 @@
+const Ziggy = {"url":"http:\/\/localhost","port":null,"defaults":{},"routes":{"posts.index":{"uri":"posts","methods":["GET","HEAD"]},"posts.create":{"uri":"posts\/create","methods":["GET","HEAD"]},"posts.store":{"uri":"posts","methods":["POST"]},"posts.show":{"uri":"posts\/{post}","methods":["GET","HEAD"],"parameters":["post"]},"posts.edit":{"uri":"posts\/{post}\/edit","methods":["GET","HEAD"],"parameters":["post"]},"posts.update":{"uri":"posts\/{post}","methods":["PUT","PATCH"],"parameters":["post"]},"posts.destroy":{"uri":"posts\/{id}","methods":["DELETE"],"parameters":["id"]},"posts.archived":{"uri":"posts\/archived","methods":["GET","HEAD"]},"posts.forceDestroy":{"uri":"posts\/{id}\/force","methods":["DELETE"],"parameters":["id"]},"posts.restore":{"uri":"posts\/{id}\/restore","methods":["PATCH"],"parameters":["id"]},"storage.local":{"uri":"storage\/{path}","methods":["GET","HEAD"],"wheres":{"path":".*"},"parameters":["path"]}}};
+if (typeof window !== 'undefined' && typeof window.Ziggy !== 'undefined') {
+  Object.assign(Ziggy.routes, window.Ziggy.routes);
+}
+export { Ziggy };
